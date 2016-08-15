@@ -38,9 +38,18 @@ After you created all necessary AWS rescources, you need to reference them in yo
 <b>Great, be your first user</b>
 Open `index.html` in your browser and sign up for your client app.
 
-##Links
+## This is what you will get:
 
-https://mobile.awsblog.com/post/TxBVEDL5Z8JKAC/Use-Amazon-Cognito-in-your-website-for-simple-AWS-authentication
-The Pattern Library
+<img  width="300px"  src="https://cloud.githubusercontent.com/assets/3428184/17666912/d1e62ad4-6302-11e6-9302-edd6af20d201.png"/>
+<img  width="300px"  src="https://cloud.githubusercontent.com/assets/3428184/17667007/408bb8b4-6303-11e6-8e4f-a0682fadb17d.png"/>
+<img width="300px"  src="https://cloud.githubusercontent.com/assets/3428184/17667050/70445bec-6303-11e6-874a-9d8018be3048.png"/>
+<img width="300px"  src="https://cloud.githubusercontent.com/assets/3428184/17667014/4703b214-6303-11e6-9143-b8a5ae62327b.png"/>
 
-https://github.com/aws/amazon-cognito-identity-js
+## Links
+
+[Article](https://mobile.awsblog.com/post/TxBVEDL5Z8JKAC/Use-Amazon-Cognito-in-your-website-for-simple-AWS-authentication) 
+about Amazon Cognito in the Browser. 
+
+Here you can find the docs for [Official amazon-cognito-identity-js](https://github.com/aws/amazon-cognito-identity-js)
+
+The kiwi background pattern can be found [here](http://thepatternlibrary.com/#kiwis)
