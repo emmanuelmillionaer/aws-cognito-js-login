@@ -13,14 +13,32 @@ Clone this project and download the following Libraries to a folder named `/dist
 
 For more information about the dependencies [click here](https://github.com/aws/amazon-cognito-identity-js/blob/master/README.md#setup)
 
-
-<b>Second step</b>Go to the AWS Cognito Console and create a new User Pool:
+<hr>
+<b>Second step</b>:
+Go to the AWS Cognito User Pools and create a new User Pool:
 For the settings used in this application enable MFA and choose next to `email` as required attribute `phone number`.
 <img width="300px" height="auto" src="https://cloud.githubusercontent.com/assets/3428184/17666091/d804eefe-62fe-11e6-9a22-da41b8995708.png">
 
+When creating the Client app it's <b>IMPORTANT</b> to uncheck the generate client secret box. Because the JavaScript SDK doesn't support apps that have a client secret. <img width="300px" height="auto" src="https://cloud.githubusercontent.com/assets/3428184/17666089/d51743cc-62fe-11e6-8309-4e6dd87c4c94.png"/>
 
+<hr>
+<b>Third step</b>:
+Go to AWS Cognito Federated Identites and create a new Identity Pool for your User Pool.
+<img width="300px"  src="https://cloud.githubusercontent.com/assets/3428184/17666392/51d70482-6300-11e6-9f69-fc0c344b0307.png" />
 
+For your Identity Pool you can create a Authenticated role as well as a Unauthenticated role, where you can define what your users are allowed to do. For example reading from/uploading to S3.
 
+<img width="300px" src="https://cloud.githubusercontent.com/assets/3428184/17666545/e0ae2992-6300-11e6-9368-46fc01b83389.png"/>
+
+<hr>
+<b>Forth step</b>:
+After you created all necessary AWS rescources, you need to reference them in your application. For that open the file `config.js` and edit the variables. The Ids like `identityPoolId` or `UserPoolId` you are able to see in the AWS Console.
+
+<hr>
+<b>Great, be your first user</b>
+Open `index.html` in your browser and sign up for your client app.
+
+##Links
 
 https://mobile.awsblog.com/post/TxBVEDL5Z8JKAC/Use-Amazon-Cognito-in-your-website-for-simple-AWS-authentication
 The Pattern Library
