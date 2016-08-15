@@ -8,55 +8,57 @@
 <script src="./dist/amazon-cognito-identity.min.js"></script>
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.5.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
 
-<div id="register">
+<div class="panel" id="register">
 
     <h1>Register</h1>
 
-    <label>Username
+    <label>Username:<br>
         <input id="username_input">
     </label>
 
-    <label>Password
-        <input id="password_input">
+    <label>Password:<br>
+        <input id="password_input" type="password">
     </label>
 
+    </br>
     <form id="register_form">
 
     </form>
 
-    <a id="signUpBtn">Sign Up</a>
-
-    <br>
-
-    <a class="loginBtn">Login</a>
-    <a class="registerBtn">Register</a>
+    <button id="signUpBtn">Sign Up</button>
+    <p class="linkpanel loginBtn">Login</p>
 </div>
 
-<div id="mfa_confirmation">
+<div class="panel" id="mfa_confirmation">
 
     <p>Dear <a id="user_name"></a> please enter your confirmation code</p>
     <input id="confirmation_input"></input>
-    <a id="confirmBtn">Confirm</a>
+    </br>
+    <button id="confirmBtn">Confirm</button>
 </div>
 
-<div id="login">
+<div class="panel" id="login">
     <h1>Login</h1>
 
-    <label>Username
+    <label>Username:<br>
         <input id="username_input">
     </label>
 
-    <label>Password
-        <input id="password_input">
+    <label>Password:<br>
+        <input id="password_input" type="password">
     </label>
 
-    <a id="loginBtn">Log in</a>
+    <button id="loginBtn">Log in</button>
+    <p class="linkpanel registerBtn">Register</p>
 </div>
 
-<div id="logged_in">
+<div class="panel" id="logged_in">
     <p> <a id="user_name"></a> you are successfully logged in</p>
 
     <ul id="user_attributes">
@@ -64,6 +66,8 @@
 
     <ul id="user_devices">
     </ul>
+
+    <p class="linkpanel" id="signOutBtn">Sign Out</p>
 </div>
 
 
