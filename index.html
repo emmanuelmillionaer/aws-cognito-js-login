@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="./dist/jsbn.js"></script>
+<script src="./dist/jsbn2.js"></script>
+<script src="./dist/sjcl.js"></script>
+<script src="./dist/aws-cognito-sdk.min.js"></script>
+<script src="./dist/amazon-cognito-identity.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.5.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="register">
+
+    <h1>Register</h1>
+
+    <label>Username
+        <input id="username_input">
+    </label>
+
+    <label>Password
+        <input id="password_input">
+    </label>
+
+    <form id="register_form">
+
+    </form>
+
+    <a id="signUpBtn">Sign Up</a>
+
+    <br>
+
+    <a class="loginBtn">Login</a>
+    <a class="registerBtn">Register</a>
+</div>
+
+<div id="mfa_confirmation">
+
+    <p>Dear <a id="user_name"></a> please enter your confirmation code</p>
+    <input id="confirmation_input"></input>
+    <a id="confirmBtn">Confirm</a>
+</div>
+
+<div id="login">
+    <h1>Login</h1>
+
+    <label>Username
+        <input id="username_input">
+    </label>
+
+    <label>Password
+        <input id="password_input">
+    </label>
+
+    <a id="loginBtn">Log in</a>
+</div>
+
+<div id="logged_in">
+    <p> <a id="user_name"></a> you are successfully logged in</p>
+
+    <ul id="user_attributes">
+    </ul>
+
+    <ul id="user_devices">
+    </ul>
+</div>
+
+
+</body>
+<script src="./config.js"></script>
+<script src="./js/main.js"></script>
+</html>
