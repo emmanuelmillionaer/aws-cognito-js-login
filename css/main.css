@@ -1,0 +1,42 @@
+html{height: 100%}
+
+input{font-size: 17px;}
+button{font-size: 13px; margin-top: 10px;}
+
+label{display: block}
+h1{ color: #c4dc53; }
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('http://www.designlicks.com/uploads/licks/656x413/17727_20140116011005000000.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    height: 100%;
+    margin: 0;
+}
+
+ul a{
+   color: #bfd750;
+}
+
+ul{
+    color: black;
+}
+
+.panel{
+    display: none;
+    max-width: 50%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.linkpanel {
+    color: blue;
+    cursor: pointer;
+    margin-top: 40px;
+    color: #a99546;
+}
