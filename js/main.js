@@ -18,9 +18,12 @@ var WindowHelper = {
 
 var FormHelper = {
     fillForm: (formId, attributes) => {
+        var form = $("#" + formId);
+        form.html('');
+
         $.each(attributes, (idx, attribute) => {
-            $("#" + formId).append(
-                $('<label/>', {text: attribute, for: attribute}).append(
+            form.append(
+                $('<label/>', {html: attribute + ":</br>", for: attribute}).append(
                     $('<input/>', {name: attribute})
                 )
             )
@@ -42,8 +45,8 @@ var Register = function(){
 
         $('#signUpBtn').click(function(){
             var nameValuePairs = FormHelper.getNameValuePairs('register_form');
+            var attributeList = $.map(nameValuePairs, (nameValuePair, idx) => { return new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(nameValuePair) })
 
-            var attributeList = $.map(nameValuePairs, (idx, nameValuePair) => { new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(nameValuePair) })
             var userName = $('#username_input').val();
             var userPassword = $('#password_input').val();
 
@@ -66,12 +69,20 @@ var Register = function(){
     this.init();
 };
 
-var MFAConfirmation = function(cognitoUser) {
+var MFAConfirmation = function(cognitoUser, method) {
 
     this.init = () => {
         WindowHelper.show('mfa_confirmation');
         $('#mfa_confirmation #user_name').text(cognitoUser.getUsername());
-        $('#confirmBtn').click(function(){ this.confirm() }.bind(this));
+        $('#confirmBtn').click(function(){
+            var code = $('#confirmation_input').val();
+
+            if(method == 'login'){
+                this.sendLoginCode(code);
+            }else{
+                this.confirm(code);
+            };
+        }.bind(this));
     };
 
     this.confirm = (confirmationCode) => {
@@ -80,15 +91,49 @@ var MFAConfirmation = function(cognitoUser) {
                 alert(err);
                 return;
             }
-            new LoggedIn(cognitoUser);
+            new Login();
         }.bind(this));
     };
+
+    this.sendLoginCode = (mfaCode) => {
+        cognitoUser.sendMFACode(mfaCode, {
+            onSuccess: function (result) {
+                new LoggedIn(cognitoUser, result);
+            },
+            onFailure: function(err) {
+                alert(err);
+            }
+        });
+    }
 
     this.init();
 }
 
-var Login = function(){
+var Login = function(opt){
     this.init = () => {
+        if(opt && opt.refresh == true){
+            this.showLoginForm();
+        }else{
+            var cognitoUser = userPool.getCurrentUser();
+
+            if (cognitoUser != null) {
+                cognitoUser.getSession(function(err, session) {
+                    if (err) {
+                       alert(err);
+                       this.showLoginForm();
+                    }else if(session.isValid()){
+                        new LoggedIn(cognitoUser, session);
+                    }else{
+                        this.showLoginForm();
+                    }
+                }.bind(this));
+            }else{
+                this.showLoginForm();
+            }
+        }
+    };
+
+    this.showLoginForm = () => {
         WindowHelper.show('login');
 
         $('#loginBtn').click(function(){
@@ -108,8 +153,11 @@ var Login = function(){
 
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: function (result) {
-                AWSInitialize(result.getIdToken().getJwtToken());
-                LoggedIn(cognitoUser);
+                LoggedIn(cognitoUser, result);
+            },
+
+            mfaRequired: function(session){
+                new MFAConfirmation(cognitoUser, 'login');
             },
 
             onFailure: function(err) {
@@ -123,23 +171,31 @@ var Login = function(){
 }
 
 var AWSInitialize = function(token){
+    Logins = {};
+    Logins['cognito-idp.' + AWSCognito.config.region + '.amazonaws.com/' + poolData.UserPoolId] = token;
+
     AWS.config.region = AWSCognito.config.region;
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId : identityPoolId,
         region: AWSCognito.config.region,
-        Logins : {
-            'cognito-idp.' + AWSCognito.config.region + '.amazonaws.com/' + poolData.UserPoolId + '': token
-        }
+        Logins : Logins
     });
 }
 
-var LoggedIn = function(cognitoUser) {
+var LoggedIn = function(cognitoUser, session) {
     this.init = () => {
+        AWSInitialize(session.getIdToken().getJwtToken());
+
         WindowHelper.show('logged_in');
         $('#logged_in #user_name').text(cognitoUser.getUsername());
 
         this.listUserAttributes();
         this.listUserDevices();
+
+        $('#logged_in #signOutBtn').click(function(){
+            cognitoUser.globalSignOut();
+            new Login();
+        });
     };
 
     this.listUserAttributes = () => {
@@ -149,10 +205,11 @@ var LoggedIn = function(cognitoUser) {
         cognitoUser.getUserAttributes(function(err, result) {
             if (err) {
                 alert(err);
+                new Login({refresh: true});
                 return;
             }
             $.each(result, function(idx, attribute){
-                attributesBox.append($('<li/>', {text: 'attribute ' + attribute.getName() + ' has value ' + attribute.getValue()}));
+                attributesBox.append($('<li/>', {html: 'attribute <a>' + attribute.getName() + '</a> has value <a>' + attribute.getValue() + '</a>'}));
             });
         });
     };
@@ -166,13 +223,19 @@ var LoggedIn = function(cognitoUser) {
 
         cognitoUser.listDevices(limit, paginationToken, {
             onSuccess: function (result) {
-                console.log(result);
-                $.each(result, function(idx, device){
-                    devicesBox.append($('<li/>', {text: device}));
+                $.each(result.Devices, function(idx, device){
+                    var deviceDescription = "device <a>" + device.DeviceKey + "</a>";
+
+                    $.each(device.DeviceAttributes, function(idx, attribute){
+                        deviceDescription += " attribute <a>" + attribute.Name + "</a> is <a>" + attribute.Value + "</a>";
+                    });
+
+                    devicesBox.append($('<li/>', {html: deviceDescription}));
                 });
             },
             onFailure: function(err) {
                 alert(err);
+                new Login({refresh: true});
             }
         });
     };
@@ -182,3 +245,5 @@ var LoggedIn = function(cognitoUser) {
 
 $('.loginBtn').click(() => {new Login()});
 $('.registerBtn').click(() => {new Register()});
+
+new Login();
