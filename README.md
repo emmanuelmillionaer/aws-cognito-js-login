@@ -11,14 +11,14 @@ Clone this project and download the following Libraries to a folder named `/dist
 3. [JavaScript BN library](http://www-cs-students.stanford.edu/~tjw/jsbn/)
 4. [Stanford JavaScript Crypto Library](https://github.com/bitwiseshiftleft/sjcl)
 
-For more information about the dependencies [click 
+For more information about the dependencies [click here](https://github.com/aws/amazon-cognito-identity-js/blob/master/README.md#setup)
+
 
 <b>Second step</b>Go to the AWS Cognito Console and create a new User Pool:
 For the settings used in this application enable MFA and choose next to `email` as required attribute `phone number`.
+<img width="300px" height="auto" src="https://cloud.githubusercontent.com/assets/3428184/17666091/d804eefe-62fe-11e6-9a22-da41b8995708.png">
 
 
-
-here](https://github.com/aws/amazon-cognito-identity-js/blob/master/README.md#setup)
 
 
 
